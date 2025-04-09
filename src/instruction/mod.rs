@@ -7,18 +7,18 @@ pub use initialize_mystate::*;
 pub use update_mystate::*;
 
 #[repr(u8)]
-pub enum MyProgramInstrution {
+pub enum MyProgramInstruction {
     InitializeState,
     UpdateState,
 }
 
-impl TryFrom<&u8> for MyProgramInstrution {
+impl TryFrom<&u8> for MyProgramInstruction {
     type Error = ProgramError;
 
     fn try_from(value: &u8) -> Result<Self, Self::Error> {
         match *value {
-            0 => Ok(MyProgramInstrution::InitializeState),
-            1 => Ok(MyProgramInstrution::UpdateState),
+            0 => Ok(MyProgramInstruction::InitializeState),
+            1 => Ok(MyProgramInstruction::UpdateState),
             _ => Err(ProgramError::InvalidInstructionData),
         }
     }
