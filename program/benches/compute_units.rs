@@ -5,7 +5,7 @@ use solana_pinocchio_starter::{
     state::{to_bytes, DataLen, MyState, State},
     ID,
 };
-use solana_sdk::pubkey;
+use solana_sdk::{pubkey, rent::Rent, sysvar::Sysvar};
 use solana_sdk::{
     account::Account,
     instruction::{AccountMeta, Instruction},
@@ -19,13 +19,24 @@ pub const RENT: Pubkey = pubkey!("SysvarRent111111111111111111111111111111111");
 
 pub const PAYER: Pubkey = pubkey!("41LzznNicELmc5iCR9Jxke62a3v1VhzpBYodQF5AQwHX");
 
+pub fn get_rent_data() -> Vec<u8> {
+    let rent = Rent::default();
+    unsafe {
+        core::slice::from_raw_parts(&rent as *const Rent as *const u8, Rent::size_of()).to_vec()
+    }
+}
+
 fn main() {
     let mollusk = Mollusk::new(&PROGRAM, "target/deploy/solana_pinocchio_starter");
 
     let (system_program, system_account) = program::keyed_account_for_system_program();
 
+    let min_balance = mollusk.sysvars.rent.minimum_balance(Rent::size_of());
+    let mut rent_account = Account::new(min_balance, Rent::size_of(), &RENT);
+    rent_account.data = get_rent_data();
+
     // Create the PDA
-    let (mystate_pda, bump) =
+    let (mystate_pda, _bump) =
         Pubkey::find_program_address(&[MyState::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
 
     //Initialize the accounts
@@ -36,7 +47,7 @@ fn main() {
     let ix_accounts = vec![
         AccountMeta::new(PAYER, true),
         AccountMeta::new(mystate_pda, false),
-        // AccountMeta::new_readonly(RENT, false),
+        AccountMeta::new_readonly(RENT, false),
         AccountMeta::new_readonly(system_program, false),
     ];
 
@@ -44,7 +55,6 @@ fn main() {
     let ix_data = InitializeMyStateIxData {
         owner: *PAYER.as_array(),
         data: [1; 32],
-        bump,
     };
 
     // Ix discriminator = 0
@@ -60,7 +70,7 @@ fn main() {
     let tx_accounts0 = &vec![
         (PAYER, payer_account.clone()),
         (mystate_pda, mystate_account.clone()),
-        // (RENT, rent_account.clone()),
+        (RENT, rent_account.clone()),
         (system_program, system_account.clone()),
     ];
 
