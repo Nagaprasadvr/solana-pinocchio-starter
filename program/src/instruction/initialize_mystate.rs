@@ -52,7 +52,7 @@ pub fn process_initilaize_state(accounts: &[AccountInfo], data: &[u8]) -> Progra
     let seeds = &[MyState::SEED.as_bytes(), &ix_data.owner];
 
     // derive the canonical bump during account init
-	let (derived_my_state_pda, bump) = pubkey::find_program_address(seeds, &crate::ID);
+    let (derived_my_state_pda, bump) = pubkey::find_program_address(seeds, &crate::ID);
     if derived_my_state_pda.ne(state_acc.key()) {
         return Err(ProgramError::InvalidAccountOwner);
     }

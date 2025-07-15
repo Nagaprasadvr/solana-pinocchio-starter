@@ -1,9 +1,6 @@
 use super::utils::{DataLen, Initialized};
 use pinocchio::{
-    account_info::AccountInfo,
-    program_error::ProgramError,
-    pubkey::Pubkey,
-    ProgramResult,
+    account_info::AccountInfo, program_error::ProgramError, pubkey::Pubkey, ProgramResult,
 };
 
 use crate::{
