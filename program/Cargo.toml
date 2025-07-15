@@ -7,10 +7,10 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-pinocchio = "0.8.4"
-pinocchio-log = "0.4.0"
-pinocchio-pubkey = "0.2.4"
-pinocchio-system = "0.2.3"
+pinocchio = {git = "https://github.com/anza-xyz/pinocchio.git"}
+pinocchio-log = {git = "https://github.com/anza-xyz/pinocchio.git"}
+pinocchio-pubkey = {git = "https://github.com/anza-xyz/pinocchio.git"}
+pinocchio-system = {git = "https://github.com/anza-xyz/pinocchio.git"}
 shank = "0.4.2"
 
 [dev-dependencies]

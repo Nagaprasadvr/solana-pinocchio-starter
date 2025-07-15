@@ -594,6 +594,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-crypto"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1c06f1eb05f06cf2e380fdded278fbf056a38974299d77960555a311dcf91a52"
+dependencies = [
+ "keccak-const",
+ "sha2-const-stable",
+]
+
+[[package]]
 name = "constant_time_eq"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1439,6 +1449,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "keccak-const"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57d8d8ce877200136358e0bbff3a77965875db3af755a11e1fa6b1b3e2df13ea"
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1936,14 +1952,12 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 [[package]]
 name = "pinocchio"
 version = "0.8.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c33b58567c11b07749cefbb8320ac023f3387c57807aeb8e3b1262501b6e9f0"
+source = "git+https://github.com/anza-xyz/pinocchio.git#f92c33690b159874bc4aea1a439c651e2b9b5537"
 
 [[package]]
 name = "pinocchio-log"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f89f8ffd986174cefe59448295a004aaf70c3605f30de066f42d27b06188f267"
+source = "git+https://github.com/anza-xyz/pinocchio.git#f92c33690b159874bc4aea1a439c651e2b9b5537"
 dependencies = [
  "pinocchio-log-macro",
 ]
@@ -1951,8 +1965,7 @@ dependencies = [
 [[package]]
 name = "pinocchio-log-macro"
 version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6edac6ac2c9c456b850d3e908b7f224a54623f6c5b75906b9e48a4e248fb332b"
+source = "git+https://github.com/anza-xyz/pinocchio.git#f92c33690b159874bc4aea1a439c651e2b9b5537"
 dependencies = [
  "quote",
  "regex",
@@ -1962,18 +1975,16 @@ dependencies = [
 [[package]]
 name = "pinocchio-pubkey"
 version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c6b20fcebc172c3cd3f54114b0241b48fa8e30893ced2eb4927aaba5e3a0ba5"
+source = "git+https://github.com/anza-xyz/pinocchio.git#f92c33690b159874bc4aea1a439c651e2b9b5537"
 dependencies = [
- "five8_const",
+ "const-crypto",
  "pinocchio",
 ]
 
 [[package]]
 name = "pinocchio-system"
 version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f75423420ae70aa748cf611cab14cfd00af08d0d2d3d258cb0cf5e2880ec19c"
+source = "git+https://github.com/anza-xyz/pinocchio.git#f92c33690b159874bc4aea1a439c651e2b9b5537"
 dependencies = [
  "pinocchio",
  "pinocchio-pubkey",
@@ -2419,6 +2430,12 @@ dependencies = [
  "cpufeatures",
  "digest 0.10.7",
 ]
+
+[[package]]
+name = "sha2-const-stable"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f179d4e11094a893b82fff208f74d448a7512f99f5a0acbd5c679b705f83ed9"
 
 [[package]]
 name = "sha3"

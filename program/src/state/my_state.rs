@@ -2,7 +2,7 @@ use super::utils::{DataLen, Initialized};
 use pinocchio::{
     account_info::AccountInfo,
     program_error::ProgramError,
-    pubkey::{self, Pubkey},
+    pubkey::Pubkey,
     ProgramResult,
 };
 
@@ -45,8 +45,8 @@ impl MyState {
     pub const SEED: &'static str = "mystate";
 
     pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
-        let seed_with_bump = &[Self::SEED.as_bytes(), owner, &[bump]];
-        let derived = pubkey::create_program_address(seed_with_bump, &crate::ID)?;
+        let seeds = &[Self::SEED.as_bytes(), owner];
+        let derived = pinocchio_pubkey::derive_address(seeds, bump, &crate::ID);
         if derived != *pda {
             return Err(MyProgramError::PdaMismatch.into());
         }
@@ -56,6 +56,7 @@ impl MyState {
     pub fn initialize(
         my_stata_acc: &AccountInfo,
         ix_data: &InitializeMyStateIxData,
+        bump: u8,
     ) -> ProgramResult {
         let my_state = unsafe { try_from_account_info_mut::<MyState>(my_stata_acc) }?;
 
@@ -63,7 +64,7 @@ impl MyState {
         my_state.state = State::Initialized;
         my_state.data = ix_data.data;
         my_state.update_count = 0;
-        my_state.bump = ix_data.bump;
+        my_state.bump = bump;
         my_state.is_initialized = 1;
 
         Ok(())

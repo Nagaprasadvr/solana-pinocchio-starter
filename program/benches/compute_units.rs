@@ -54,7 +54,6 @@ fn main() {
     let ix_data = InitializeMyStateIxData {
         owner: *PAYER.as_array(),
         data: [1; 32],
-        bump,
     };
 
     // Ix discriminator = 0

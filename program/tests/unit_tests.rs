@@ -40,7 +40,7 @@ fn test_initialize_mystate() {
     let (system_program, system_account) = program::keyed_account_for_system_program();
 
     // Create the PDA
-    let (mystate_pda, bump) =
+    let (mystate_pda, _bump) =
         Pubkey::find_program_address(&[MyState::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
 
     //Initialize the accounts
@@ -62,7 +62,6 @@ fn test_initialize_mystate() {
     let ix_data = InitializeMyStateIxData {
         owner: *PAYER.as_array(),
         data: [1; 32],
-        bump,
     };
 
     // Ix discriminator = 0

@@ -2,7 +2,7 @@ use pinocchio::{
     account_info::AccountInfo,
     instruction::{Seed, Signer},
     program_error::ProgramError,
-    pubkey::Pubkey,
+    pubkey::{self, Pubkey},
     sysvars::rent::Rent,
     ProgramResult,
 };
@@ -22,7 +22,6 @@ use crate::{
 pub struct InitializeMyStateIxData {
     pub owner: Pubkey,
     pub data: [u8; 32],
-    pub bump: u8,
 }
 
 impl DataLen for InitializeMyStateIxData {
@@ -50,15 +49,20 @@ pub fn process_initilaize_state(accounts: &[AccountInfo], data: &[u8]) -> Progra
         return Err(MyProgramError::InvalidOwner.into());
     }
 
-    let pda_bump_bytes = [ix_data.bump];
+    let seeds = &[MyState::SEED.as_bytes(), &ix_data.owner];
 
-    MyState::validate_pda(ix_data.bump, state_acc.key(), &ix_data.owner)?;
+    let (expected_my_state_pubkey, bump) = pubkey::find_program_address(seeds, &crate::ID);
+    if expected_my_state_pubkey.ne(state_acc.key()) {
+        return Err(ProgramError::InvalidAccountOwner);
+    }
+
+    let bump_binding = [bump];
 
     // Signer seeds
     let signer_seeds = [
         Seed::from(MyState::SEED.as_bytes()),
         Seed::from(&ix_data.owner),
-        Seed::from(&pda_bump_bytes[..]),
+        Seed::from(&bump_binding),
     ];
     let signers = [Signer::from(&signer_seeds[..])];
     // Create the governance config account
@@ -71,7 +75,7 @@ pub fn process_initilaize_state(accounts: &[AccountInfo], data: &[u8]) -> Progra
     }
     .invoke_signed(&signers)?;
 
-    MyState::initialize(state_acc, ix_data)?;
+    MyState::initialize(state_acc, ix_data, bump)?;
 
     Ok(())
 }
