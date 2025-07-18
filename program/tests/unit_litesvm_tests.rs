@@ -134,7 +134,14 @@ fn setup_test() -> (LiteSVM, Keypair) {
     svm.add_program_from_file(PROGRAM, "target/deploy/solana_pinocchio_starter.so")
         .unwrap();
 
-    let fee_payer = Keypair::new();
+    // Defining constant fee_payer for testing to avoid bump mismatch between test cases
+    let fee_payer = Keypair::from_bytes(&[
+        130, 101, 234, 182, 1, 73, 82, 145, 145, 214, 14, 229, 210, 123, 80, 217, 218, 234, 148,
+        128, 239, 202, 246, 85, 203, 247, 7, 222, 58, 216, 205, 29, 225, 151, 189, 79, 127, 69, 8,
+        90, 127, 127, 167, 85, 46, 142, 92, 26, 85, 202, 112, 113, 112, 21, 225, 159, 88, 106, 13,
+        26, 179, 125, 169, 194,
+    ])
+    .unwrap();
 
     svm.airdrop(&fee_payer.pubkey(), 10 * LAMPORTS_PER_SOL)
         .unwrap();
