@@ -15,8 +15,7 @@ shank = "0.4.2"
 
 [dev-dependencies]
 solana-sdk = "2.2.1"
-mollusk-svm = "0.4.0"
-mollusk-svm-bencher = "0.4.0"
+litesvm = "0.6.1"
 
 
 [features]
