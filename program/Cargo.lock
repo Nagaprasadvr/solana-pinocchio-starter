@@ -3413,6 +3413,7 @@ dependencies = [
 name = "solana-pinocchio-starter"
 version = "0.1.0"
 dependencies = [
+ "bytemuck",
  "mollusk-svm",
  "mollusk-svm-bencher",
  "pinocchio",
