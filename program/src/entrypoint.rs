@@ -26,13 +26,13 @@ fn process_instruction(
     match MyProgramInstruction::try_from(ix_disc)? {
         MyProgramInstruction::InitializeState => {
             msg!("Ix:0");
-            let _ = instruction::process_initialize_state(accounts, instruction_data);
+            let _ = instruction::process_initialize_state_v1(accounts, instruction_data);
             instruction::process_initialize_state_v2(accounts,instruction_data)
 
         }
         MyProgramInstruction::UpdateState => {
             msg!("Ix:1");
-            let _ = instruction::process_update_state(accounts, instruction_data);
+            let _ = instruction::process_update_state_v1(accounts, instruction_data);
             instruction::process_update_state_v2(accounts, instruction_data)
         }
     }

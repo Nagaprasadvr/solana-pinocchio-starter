@@ -25,7 +25,7 @@ impl TryFrom<&u8> for MyProgramInstruction {
 }
 
 mod idl_gen {
-    use super::InitializeMyStateIxData;
+    use super::InitializeMyStateV1IxData;
 
     #[derive(shank::ShankInstruction)]
     enum _MyProgramInstruction {
@@ -33,7 +33,7 @@ mod idl_gen {
         #[account(1, writable, name = "state_acc", desc = "New State account")]
         #[account(2, name = "sysvar_rent_acc", desc = "Sysvar rent account")]
         #[account(3, name = "system_program_acc", desc = "System program account")]
-        InitializeState(InitializeMyStateIxData),
+        InitializeState(InitializeMyStateV1IxData),
         #[account(0, writable, signer, name = "payer_acc", desc = "Fee payer account")]
         #[account(1, writable, name = "state_acc", desc = "State account")]
         UpdateState,

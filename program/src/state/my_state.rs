@@ -7,7 +7,7 @@ use bytemuck::{Pod,Zeroable};
 
 use crate::{
     error::MyProgramError,
-    instruction::{InitializeMyStateIxData, UpdateMyStateIxData},
+    instruction::{InitializeMyStateV1IxData, UpdateMyStateV1IxData},
     instruction::{InitializeMyStateV2IxData,UpdateMyStateV2IxData},
     state::try_from_account_info_mut,
 };
@@ -22,7 +22,7 @@ pub enum State {
 
 #[repr(C)] //keeps the struct layout the same across different architectures
 #[derive(Clone, Copy, Debug, PartialEq, shank::ShankAccount)]
-pub struct MyState {
+pub struct MyStateV1 {
     pub is_initialized: u8,
     pub owner: Pubkey,
     pub state: State,
@@ -47,11 +47,11 @@ impl DataLen for MyStateV2 {
     const LEN: usize = core::mem::size_of::<MyStateV2>();
 }
 
-impl DataLen for MyState {
-    const LEN: usize = core::mem::size_of::<MyState>();
+impl DataLen for MyStateV1 {
+    const LEN: usize = core::mem::size_of::<MyStateV1>();
 }
 
-impl Initialized for MyState {
+impl Initialized for MyStateV1 {
     fn is_initialized(&self) -> bool {
         self.is_initialized > 0
     }
@@ -63,7 +63,7 @@ impl Initialized for MyStateV2 {
     }
 }
 
-impl MyState {
+impl MyStateV1 {
     pub const SEED: &'static str = "mystate";
 
     pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
@@ -77,10 +77,10 @@ impl MyState {
 
     pub fn initialize( 
         my_stata_acc: &AccountInfo,
-        ix_data: &InitializeMyStateIxData,
+        ix_data: &InitializeMyStateV1IxData,
         bump: u8,
     ) -> ProgramResult {
-        let my_state = unsafe { try_from_account_info_mut::<MyState>(my_stata_acc) }?;
+        let my_state = unsafe { try_from_account_info_mut::<MyStateV1>(my_stata_acc) }?;
 
         my_state.owner = ix_data.owner;
         my_state.state = State::Initialized;
@@ -92,7 +92,7 @@ impl MyState {
         Ok(())
     }
 
-    pub fn update(&mut self, ix_data: &UpdateMyStateIxData) -> ProgramResult {
+    pub fn update(&mut self, ix_data: &UpdateMyStateV1IxData) -> ProgramResult {
         self.data = ix_data.data;
         if self.state != State::Updated {
             self.state = State::Updated;

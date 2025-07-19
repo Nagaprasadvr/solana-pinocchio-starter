@@ -1,8 +1,8 @@
 use mollusk_svm::{program, Mollusk};
 use mollusk_svm_bencher::MolluskComputeUnitBencher;
 use solana_pinocchio_starter::{
-    instruction::{InitializeMyStateIxData, UpdateMyStateIxData},
-    state::{to_bytes, DataLen, MyState, State},
+    instruction::{InitializeMyStateV1IxData, UpdateMyStateV1IxData},
+    state::{to_bytes, DataLen, MyStateV1, State},
     ID,
 };
 use solana_sdk::{
@@ -34,7 +34,7 @@ fn main() {
 
     // Create the PDA
     let (mystate_pda, bump) =
-        Pubkey::find_program_address(&[MyState::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
+        Pubkey::find_program_address(&[MyStateV1::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
 
     //Initialize the accounts
     let payer_account = Account::new(1 * LAMPORTS_PER_SOL, 0, &system_program);
@@ -51,7 +51,7 @@ fn main() {
     ];
 
     // Create the instruction data
-    let ix_data = InitializeMyStateIxData {
+    let ix_data = InitializeMyStateV1IxData {
         owner: *PAYER.as_array(),
         data: [1; 32],
     };
@@ -73,10 +73,10 @@ fn main() {
         (system_program, system_account.clone()),
     ];
 
-    let rent = mollusk.sysvars.rent.minimum_balance(MyState::LEN);
-    let mut mystate_account = Account::new(rent, MyState::LEN, &ID.into());
+    let rent = mollusk.sysvars.rent.minimum_balance(MyStateV1::LEN);
+    let mut mystate_account = Account::new(rent, MyStateV1::LEN, &ID.into());
 
-    let my_state = MyState {
+    let my_state = MyStateV1 {
         is_initialized: 1,
         owner: *PAYER.as_array(),
         state: State::Initialized,
@@ -94,7 +94,7 @@ fn main() {
     ];
 
     // Create the instruction data
-    let ix_data = UpdateMyStateIxData { data: [1; 32] };
+    let ix_data = UpdateMyStateV1IxData { data: [1; 32] };
 
     // Ix discriminator = 1
     let mut ser_ix_data = vec![1];
