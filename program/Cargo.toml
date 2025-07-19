@@ -7,18 +7,17 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-bytemuck = "1.23.0"
 pinocchio = { git = "https://github.com/anza-xyz/pinocchio.git" }
 pinocchio-log = { git = "https://github.com/anza-xyz/pinocchio.git" }
 pinocchio-pubkey = { git = "https://github.com/anza-xyz/pinocchio.git" }
 pinocchio-system = { git = "https://github.com/anza-xyz/pinocchio.git" }
 shank = "0.4.2"
+bytemuck = { version = "1.23.0", features = ["derive"] }
 
 [dev-dependencies]
 solana-sdk = "2.2.1"
 mollusk-svm = "0.4.0"
 mollusk-svm-bencher = "0.4.0"
-bytemuck = { version = "1.23.0", features = ["derive", "min_const_generics"] }
 
 
 [features]

@@ -9,7 +9,7 @@ use crate::{
     error::MyProgramError,
     instruction::{InitializeMyStateIxData, UpdateMyStateIxData},
     instruction::{InitializeMyStateV2IxData,UpdateMyStateV2IxData},
-    state::{my_state, try_from_account_info_mut},
+    state::try_from_account_info_mut,
 };
 
 #[repr(u8)]
@@ -34,12 +34,13 @@ pub struct MyState {
 #[repr(C)]
 #[derive(Pod, Zeroable, Clone, Copy, Debug, PartialEq, shank::ShankType)]
 pub struct MyStateV2 {
-    pub is_initialized: u8,
-    pub owner: Pubkey,  
-    pub state: u8,          
+    pub owner: Pubkey,
     pub data: [u8; 32],
     pub update_count: u32,
+    pub state: u8,
+    pub is_initialized: u8,
     pub bump: u8,
+    pub _padding: u8,
 }
 
 impl DataLen for MyStateV2 {
