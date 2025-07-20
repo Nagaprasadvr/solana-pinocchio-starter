@@ -9,7 +9,8 @@ extern crate alloc;
 use alloc::vec;
 
 use solana_pinocchio_starter::instruction::{InitializeMyStateV1IxData, UpdateMyStateV1IxData};
-use solana_pinocchio_starter::state::{to_bytes, DataLen, MyStateV1, State};
+use solana_pinocchio_starter::instruction::{InitializeMyStateV2IxData,UpdateMyStateV2IxData};
+use solana_pinocchio_starter::state::{to_bytes, DataLen, MyStateV1,MyStateV2};
 use solana_pinocchio_starter::ID;
 use solana_sdk::rent::Rent;
 use solana_sdk::sysvar::Sysvar;
@@ -41,7 +42,7 @@ fn test_initialize_mystate() {
 
     // Create the PDA
     let (mystate_pda, _bump) =
-        Pubkey::find_program_address(&[MyStateV1::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
+        Pubkey::find_program_address(&[MyStateV2::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
 
     //Initialize the accounts
     let payer_account = Account::new(1 * LAMPORTS_PER_SOL, 0, &system_program);
@@ -59,7 +60,7 @@ fn test_initialize_mystate() {
     ];
 
     // Create the instruction data
-    let ix_data = InitializeMyStateV1IxData {
+    let ix_data = InitializeMyStateV2IxData {
         owner: *PAYER.as_array(),
         data: [1; 32],
     };
@@ -96,22 +97,23 @@ fn test_update_mystate() {
 
     // Create the PDA
     let (mystate_pda, bump) =
-        Pubkey::find_program_address(&[MyStateV1::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
+        Pubkey::find_program_address(&[MyStateV2::SEED.as_bytes(), &PAYER.to_bytes()], &PROGRAM);
 
     //Initialize the accounts
     let payer_account = Account::new(1 * LAMPORTS_PER_SOL, 0, &system_program);
 
-    let rent = mollusk.sysvars.rent.minimum_balance(MyStateV1::LEN);
+    let rent = mollusk.sysvars.rent.minimum_balance(MyStateV2::LEN);
 
-    let mut mystate_account = Account::new(rent, MyStateV1::LEN, &ID.into());
+    let mut mystate_account = Account::new(rent, MyStateV2::LEN, &ID.into());
 
-    let my_state = MyStateV1 {
+    let my_state = MyStateV2 {
         is_initialized: 1,
         owner: *PAYER.as_array(),
-        state: State::Initialized,
+        state: 1,
         data: [1; 32],
         update_count: 0,
         bump,
+        _padding: 1
     };
 
     mystate_account.data = unsafe { to_bytes(&my_state).to_vec() };
@@ -123,7 +125,7 @@ fn test_update_mystate() {
     ];
 
     // Create the instruction data
-    let ix_data = UpdateMyStateV1IxData { data: [1; 32] };
+    let ix_data = UpdateMyStateV2IxData { data: [1; 32] };
 
     // Ix discriminator = 1
     let mut ser_ix_data = vec![1];
