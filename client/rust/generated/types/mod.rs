@@ -5,11 +5,14 @@
 //! <https://github.com/codama-idl/codama>
 //!
 
-  pub(crate) mod r#initialize_my_state_ix_data;
-  pub(crate) mod r#my_program_error;
-  pub(crate) mod r#state;
+pub(crate) mod r#initialize_my_state_v1_ix_data;
+pub(crate) mod r#initialize_my_state_v2_ix_data;
+pub(crate) mod r#my_program_error;
+pub(crate) mod r#my_state_v2;
+pub(crate) mod r#state;
 
-  pub use self::r#initialize_my_state_ix_data::*;
-  pub use self::r#my_program_error::*;
-  pub use self::r#state::*;
-
+pub use self::r#initialize_my_state_v1_ix_data::*;
+pub use self::r#initialize_my_state_v2_ix_data::*;
+pub use self::r#my_program_error::*;
+pub use self::r#my_state_v2::*;
+pub use self::r#state::*;

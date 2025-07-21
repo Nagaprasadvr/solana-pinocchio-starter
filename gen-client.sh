@@ -19,4 +19,8 @@ client/.crates/bin/shank idl --crate-root program --out-dir client/idl --out-fil
 # Generate client
 cd client
 bun install
-bun run codama "$LANG"
+bun run gen-client "$LANG"
+
+if [[ "$LANG" == "rust" || "$LANG" == "all" ]]; then
+  rustfmt rust/generated/*.rs rust/generated/**/*.rs
+fi

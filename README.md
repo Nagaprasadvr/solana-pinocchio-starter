@@ -73,7 +73,7 @@ Solana CLI Version: solana-cli 2.2.17 (src:e998175d; feat:3073396398, client:Aga
 
 ### 5. Client Generation
 
-Shank support has been added to generate the client code for the program in multiple languages using Codama.
+Shank support has been added to generate the client code for the program in ts/rust languages using Codama.
 
 Run this from the root of the repo and change permissions for the bash script if needed (chmod +x gen-client.sh)
 

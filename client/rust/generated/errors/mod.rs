@@ -4,6 +4,3 @@
 //!
 //! <https://github.com/codama-idl/codama>
 //!
-
-  
-  

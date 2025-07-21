@@ -40,9 +40,9 @@
       ],
       "args": [
         {
-          "name": "initializeMyStateIxData",
+          "name": "initializeMyStateV1IxData",
           "type": {
-            "defined": "InitializeMyStateIxData"
+            "defined": "InitializeMyStateV1IxData"
           }
         }
       ],
@@ -80,7 +80,7 @@
   ],
   "accounts": [
     {
-      "name": "MyState",
+      "name": "MyStateV1",
       "type": {
         "kind": "struct",
         "fields": [
@@ -121,7 +121,7 @@
   ],
   "types": [
     {
-      "name": "InitializeMyStateIxData",
+      "name": "InitializeMyStateV2IxData",
       "type": {
         "kind": "struct",
         "fields": [
@@ -137,6 +137,68 @@
                 32
               ]
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitializeMyStateV1IxData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MyStateV2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "updateCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": "u8"
+          },
+          {
+            "name": "isInitialized",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "padding",
+            "type": "u8"
           }
         ]
       }

@@ -5,7 +5,6 @@
 //! <https://github.com/codama-idl/codama>
 //!
 
-  pub(crate) mod r#my_state;
+pub(crate) mod r#my_state_v1;
 
-  pub use self::r#my_state::*;
-
+pub use self::r#my_state_v1::*;

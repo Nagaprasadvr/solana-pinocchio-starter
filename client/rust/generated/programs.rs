@@ -7,7 +7,6 @@
 
 use solana_pubkey::{pubkey, Pubkey};
 
-
-  /// `solana_pinocchio_starter` program ID.
-  pub const SOLANA_PINOCCHIO_STARTER_ID: Pubkey = pubkey!("ENrRns55VechXJiq4bMbdx7idzQh7tvaEJoYeWxRNe7Y");
-
+/// `solana_pinocchio_starter` program ID.
+pub const SOLANA_PINOCCHIO_STARTER_ID: Pubkey =
+    pubkey!("ENrRns55VechXJiq4bMbdx7idzQh7tvaEJoYeWxRNe7Y");

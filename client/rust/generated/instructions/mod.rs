@@ -5,9 +5,8 @@
 //! <https://github.com/codama-idl/codama>
 //!
 
-  pub(crate) mod r#initialize_state;
-  pub(crate) mod r#update_state;
+pub(crate) mod r#initialize_state;
+pub(crate) mod r#update_state;
 
-  pub use self::r#initialize_state::*;
-  pub use self::r#update_state::*;
-
+pub use self::r#initialize_state::*;
+pub use self::r#update_state::*;
