@@ -32,7 +32,7 @@ pub struct MyStateV1 {
 }
 
 #[repr(C)]
-#[derive(Pod, Zeroable, Clone, Copy, Debug, PartialEq, shank::ShankType)]
+#[derive(Pod, Zeroable, Clone, Copy, Debug, PartialEq, shank::ShankAccount)]
 pub struct MyStateV2 {
     pub owner: Pubkey,
     pub data: [u8; 32],
