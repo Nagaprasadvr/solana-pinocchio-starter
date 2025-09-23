@@ -68,7 +68,7 @@ impl MyStateV1 {
 
     pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
         let seeds = &[Self::SEED.as_bytes(), owner];
-        let derived = pinocchio_pubkey::derive_address(seeds, bump, &crate::ID);
+        let derived = pinocchio_pubkey::derive_address(seeds, Some(bump), &crate::ID);
         if derived != *pda {
             return Err(MyProgramError::PdaMismatch.into());
         }
@@ -124,7 +124,7 @@ impl MyStateV2 {
 
    pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
         let seeds = &[Self::SEED.as_bytes(), owner];
-        let derived = pinocchio_pubkey::derive_address(seeds, bump, &crate::ID);
+        let derived = pinocchio_pubkey::derive_address(seeds, Some(bump), &crate::ID);
         if derived != *pda {
             return Err(MyProgramError::PdaMismatch.into());
         }
