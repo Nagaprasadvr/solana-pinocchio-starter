@@ -27,13 +27,20 @@ fn process_instruction(
         MyProgramInstruction::InitializeState => {
             msg!("Ix:0");
             instruction::process_initialize_state_v1(accounts, instruction_data)?;
-            instruction::process_initialize_state_v2(accounts,instruction_data)?;
             Ok(())
-
+        }
+        MyProgramInstruction::InitializeStateV2 => {
+            msg!("Ix:1");
+            instruction::process_initialize_state_v2(accounts, instruction_data)?;
+            Ok(())
         }
         MyProgramInstruction::UpdateState => {
-            msg!("Ix:1");
+            msg!("Ix:2");
             instruction::process_update_state_v1(accounts, instruction_data)?;
+            Ok(())
+        }
+        MyProgramInstruction::UpdateStateV2 => {
+            msg!("Ix:3");
             instruction::process_update_state_v2(accounts, instruction_data)?;
             Ok(())
         }

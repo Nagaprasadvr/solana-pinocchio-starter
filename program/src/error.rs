@@ -2,13 +2,13 @@ use pinocchio::program_error::ProgramError;
 
 #[derive(Clone, PartialEq, shank::ShankType)]
 pub enum MyProgramError {
-    // overflow error
+    /// overflow error
     WriteOverflow,
-    // invalid instruction data
+    /// invalid instruction data
     InvalidInstructionData,
-    // pda mismatch
+    /// pda mismatch
     PdaMismatch,
-    // Invalid Owner
+    /// Invalid Owner
     InvalidOwner,
 }
 

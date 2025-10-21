@@ -3,12 +3,12 @@ use pinocchio::{
     account_info::AccountInfo, program_error::ProgramError, pubkey::Pubkey, ProgramResult,
 };
 
-use bytemuck::{Pod,Zeroable};
+use bytemuck::{Pod, Zeroable};
 
 use crate::{
     error::MyProgramError,
     instruction::{InitializeMyStateV1IxData, UpdateMyStateV1IxData},
-    instruction::{InitializeMyStateV2IxData,UpdateMyStateV2IxData},
+    instruction::{InitializeMyStateV2IxData, UpdateMyStateV2IxData},
     state::try_from_account_info_mut,
 };
 
@@ -75,7 +75,7 @@ impl MyStateV1 {
         Ok(())
     }
 
-    pub fn initialize( 
+    pub fn initialize(
         my_stata_acc: &AccountInfo,
         ix_data: &InitializeMyStateV1IxData,
         bump: u8,
@@ -103,8 +103,6 @@ impl MyStateV1 {
     }
 }
 
-
-
 impl MyStateV2 {
     pub const SEED: &'static str = "mystatev2";
 
@@ -114,15 +112,15 @@ impl MyStateV2 {
             0 => State::Uninitialized,
             1 => State::Initialized,
             2 => State::Updated,
-            _ => State::Uninitialized // for fallback
+            _ => State::Uninitialized, // for fallback
         }
     }
 
-    pub fn set_state(&mut self,state: State) {
+    pub fn set_state(&mut self, state: State) {
         self.state = state as u8;
     }
 
-   pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
+    pub fn validate_pda(bump: u8, pda: &Pubkey, owner: &Pubkey) -> Result<(), ProgramError> {
         let seeds = &[Self::SEED.as_bytes(), owner];
         let derived = pinocchio_pubkey::derive_address(seeds, Some(bump), &crate::ID);
         if derived != *pda {
@@ -131,15 +129,14 @@ impl MyStateV2 {
         Ok(())
     }
 
-
-    pub fn initialize( 
+    pub fn initialize(
         my_stata_acc: &AccountInfo,
         ix_data: &InitializeMyStateV2IxData,
         bump: u8,
     ) -> ProgramResult {
-       //Using the Bytemuck for zero copy deserilization instead of unsafe block
-       let account_data = &mut my_stata_acc.try_borrow_mut_data()?;
-       let my_state = bytemuck::from_bytes_mut::<MyStateV2>(&mut account_data[..MyStateV2::LEN]);
+        //Using the Bytemuck for zero copy deserilization instead of unsafe block
+        let account_data = &mut my_stata_acc.try_borrow_mut_data()?;
+        let my_state = bytemuck::from_bytes_mut::<MyStateV2>(&mut account_data[..MyStateV2::LEN]);
 
         my_state.owner = ix_data.owner;
         my_state.set_state(State::Initialized);
@@ -160,6 +157,4 @@ impl MyStateV2 {
 
         Ok(())
     }
-
-
 }

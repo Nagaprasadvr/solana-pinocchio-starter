@@ -9,7 +9,9 @@ pub use update_mystate::*;
 #[repr(u8)]
 pub enum MyProgramInstruction {
     InitializeState,
+    InitializeStateV2,
     UpdateState,
+    UpdateStateV2,
 }
 
 impl TryFrom<&u8> for MyProgramInstruction {
@@ -18,7 +20,9 @@ impl TryFrom<&u8> for MyProgramInstruction {
     fn try_from(value: &u8) -> Result<Self, Self::Error> {
         match *value {
             0 => Ok(MyProgramInstruction::InitializeState),
-            1 => Ok(MyProgramInstruction::UpdateState),
+            1 => Ok(MyProgramInstruction::InitializeStateV2),
+            2 => Ok(MyProgramInstruction::UpdateState),
+            3 => Ok(MyProgramInstruction::UpdateStateV2),
             _ => Err(ProgramError::InvalidInstructionData),
         }
     }

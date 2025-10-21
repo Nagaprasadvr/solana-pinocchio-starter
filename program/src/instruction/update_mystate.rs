@@ -1,6 +1,3 @@
-use bytemuck::{Pod, Zeroable};
-use pinocchio::{account_info::AccountInfo, program_error::ProgramError, ProgramResult};
-
 use crate::{
     error::MyProgramError,
     state::{
@@ -9,6 +6,9 @@ use crate::{
         Initialized, MyStateV1, MyStateV2,
     },
 };
+use bytemuck::{Pod, Zeroable};
+use pinocchio::{account_info::AccountInfo, program_error::ProgramError, ProgramResult};
+use pinocchio_log::log;
 
 // V1 instruction data (custom serialization)
 #[repr(C)]
@@ -43,6 +43,7 @@ pub fn process_update_state_v1(accounts: &[AccountInfo], data: &[u8]) -> Program
     }
 
     let my_state = unsafe { try_from_account_info_mut::<MyStateV1>(state_acc)? };
+    log!("my state: {}", &my_state.owner);
 
     // CHECK if my_state is initialized
     if !my_state.is_initialized() {

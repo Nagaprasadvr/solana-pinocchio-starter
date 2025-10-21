@@ -1,3 +1,4 @@
+use bytemuck::{Pod, Zeroable};
 use pinocchio::{
     account_info::AccountInfo,
     instruction::{Seed, Signer},
@@ -6,8 +7,7 @@ use pinocchio::{
     sysvars::rent::Rent,
     ProgramResult,
 };
-
-use bytemuck::{Pod, Zeroable};
+// use pinocchio_log::log;
 
 use pinocchio_system::instructions::CreateAccount;
 
@@ -41,7 +41,6 @@ impl DataLen for InitializeMyStateV2IxData {
     const LEN: usize = core::mem::size_of::<InitializeMyStateV2IxData>();
 }
 
-
 pub fn process_initialize_state_v1(accounts: &[AccountInfo], data: &[u8]) -> ProgramResult {
     let [payer_acc, state_acc, sysvar_rent_acc, _system_program] = accounts else {
         return Err(ProgramError::NotEnoughAccountKeys);
@@ -59,19 +58,23 @@ pub fn process_initialize_state_v1(accounts: &[AccountInfo], data: &[u8]) -> Pro
 
     let ix_data = unsafe { load_ix_data::<InitializeMyStateV1IxData>(data)? };
 
-    if ix_data.owner.ne(payer_acc.key()) {
+    if ix_data.owner.ne(payer_acc.key().as_slice()) {
         return Err(MyProgramError::InvalidOwner.into());
     }
 
     let seeds = &[MyStateV1::SEED.as_bytes(), &ix_data.owner];
     // derive the canonical bump during account init
     let (derived_my_state_pda, bump) = pubkey::find_program_address(seeds, &crate::ID);
+
     if derived_my_state_pda.ne(state_acc.key()) {
         return Err(ProgramError::InvalidAccountOwner);
     }
 
+    // log!("ix data owner: {}", &ix_data.owner);
+    // log!("payer: {}", payer_acc.key());
     let bump_binding = [bump];
     //Signer Seeds
+    //  &[&[&[u8]]]
     let signer_seeds = [
         Seed::from(MyStateV1::SEED.as_bytes()),
         Seed::from(&ix_data.owner),
@@ -92,7 +95,6 @@ pub fn process_initialize_state_v1(accounts: &[AccountInfo], data: &[u8]) -> Pro
 
     Ok(())
 }
-
 
 pub fn process_initialize_state_v2(accounts: &[AccountInfo], data: &[u8]) -> ProgramResult {
     let [payer_acc, state_acc, sysvar_rent_acc, _system_program] = accounts else {
@@ -141,7 +143,6 @@ pub fn process_initialize_state_v2(accounts: &[AccountInfo], data: &[u8]) -> Pro
     }
     .invoke_signed(&signers)?;
 
-    
     MyStateV2::initialize(state_acc, &ix_data, bump)?;
 
     Ok(())
